@@ -31,6 +31,34 @@ exports.registerUser = async (req, res) => {
     return res.status(200).json("Successful");
 };
 
+
+exports.createAdmin = async (req, res) => {
+    let request = req.body;
+    console.log(request);
+    let email = request.email;
+    let password = request.password;
+
+    let credentialsCheck = await this.checkCredentials(email.toLowerCase(), password);
+    if (!credentialsCheck) {
+        return res.status(400).json("Missing required information")
+    }
+
+    let checkEmail = await User.findOne({ email: email.toLowerCase() });
+    // console.log(checkEmail);
+    if (!(checkEmail === null)) {
+        return res.status(400).json("Email already exists");
+    }
+    const user = new User({
+        _id: new mongoose.Types.ObjectId(),
+        email: email.toLowerCase(),
+        password: password,
+    });
+    await user.save();
+    return res.status(200).json("Successful");
+};
+
+
+
 exports.checkCredentials = async (email, password) => {
     if (!email || !password) {
         return false;
