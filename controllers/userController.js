@@ -109,12 +109,12 @@ exports.verifyEmail = async (req, res) => {
 
 exports.login = async (req, res) => {
 
-    let request = req.body;
-    let email = request.email;
-    let password = request.password;
-    const checkEmail = await User.findOne({ email: req.body.email, password: password });
-    if (checkEmail === null) {
-        return res.status(401).json("Invalid");
+    let email = req.body.email;
+    let password = req.body.password;
+    const checkEmail = await User.findOne({ email: email, password: password });
+    console.log(checkEmail);
+    if (!checkEmail) {
+        return res.status(201).json("Invalid");
     }
     return res.status(200).json(checkEmail);
 };

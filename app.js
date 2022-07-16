@@ -92,5 +92,5 @@ app.use((error, req, res, next) => {
 });
 
 
-app.listen(process.env.PORT || 4000);
+server.listen(process.env.PORT || 4000);
 module.exports = app;
